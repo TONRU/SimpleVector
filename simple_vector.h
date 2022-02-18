@@ -29,13 +29,13 @@ public:
     explicit SimpleVector(size_t size)
         : size_(size), capacity_(size), items_(size)
     {
-        std::move(begin(), end(), Type());
+        std::fill(begin(), end(), Type());
     }
 
     SimpleVector(size_t size, const Type& value)
         : size_(size), capacity_(size), items_(size)
     {
-        std::move(begin(), end(), value);
+        std::fill(begin(), end(), value);
     }
 
     SimpleVector(std::initializer_list<Type> init)
@@ -109,7 +109,7 @@ public:
     {
         if (index >= size_)
         {
-            throw std::out_of_range("Invalid index");
+            throw std::out_of_range("Error, invalid index");
         }
         else
         {
@@ -121,7 +121,7 @@ public:
     {
         if (index >= size_)
         {
-            throw std::out_of_range("Invalid index");
+            throw std::out_of_range("Error, invalid index");
         }
         else
         {
@@ -142,13 +142,13 @@ public:
         }
         else if (new_size <= capacity_)
         {
-            std::move(end(), &items_[capacity_], Type());
+            //std::fill(end(), &items_[capacity_], Type());
             size_ = new_size;
         }
         else
         {
             Reserve(std::max(new_size, 2 * capacity_));
-            std::move(&items_[size_], &items_[new_size], Type());
+            // std::fill(&items_[size_], &items_[new_size], Type());
             size_ = new_size;
         }
     }
@@ -213,14 +213,14 @@ public:
 
     Iterator Insert(ConstIterator pos, Type&& value)
     {
-        size_t number_pos = VectorMoveRigth(pos);
+        size_t number_pos = VectorMove(pos);
         items_[number_pos] = std::move(value);
         return &items_[number_pos];
     }
 
     Iterator Insert(ConstIterator pos, const Type& value)
     {
-        size_t number_pos = VectorMoveRigth(pos);
+        size_t number_pos = VectorMove(pos);
         items_[number_pos] = value;
         return &items_[number_pos];
     }
@@ -266,7 +266,7 @@ private:
     size_t capacity_ = 0;
     ArrayPtr<Type> items_;
 
-    size_t VectorMoveRigth(ConstIterator pos)
+    size_t VectorMove(ConstIterator pos)
     {
         size_t number_pos = std::distance<ConstIterator>(cbegin(), pos);
         if (size_ < capacity_)
