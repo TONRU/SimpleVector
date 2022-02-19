@@ -185,13 +185,14 @@ public:
 
     void PushBack(Type&& item)
     {
+        size_t number = 1;
         if (size_ < capacity_)
         {
             items_[size_] = std::move(item);
         }
         else
         {
-            Reserve(std::max(1ul, 2 * capacity_));
+            Reserve(std::max(number, 2 * capacity_));
             items_[size_] = std::move(item);
         }
         ++size_;
@@ -199,13 +200,14 @@ public:
 
     void PushBack(const Type& item)
     {
+        size_t number = 1;
         if (size_ < capacity_)
         {
             items_[size_] = item;
         }
         else
         {
-            Reserve(std::max(1ul, 2 * capacity_));
+            Reserve(std::max(number, 2 * capacity_));
             items_[size_] = item;
         }
         ++size_;
